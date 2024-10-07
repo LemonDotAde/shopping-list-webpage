@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addItem = addItem;
 
+window.addItem = addItem;
+
 function addItem() {
     const newItemInput = document.getElementById('new-item');
     const newItemText = newItemInput.value.trim();
