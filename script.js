@@ -99,7 +99,13 @@ function loadCompletedLists() {
     });
 }
 
-function displayCompletedList(list) {
+function deleteCompletedList(index) {
+    const completedLists = JSON.parse(localStorage.getItem('completedLists')) || [];
+    completedLists.splice(index, 1);
+    localStorage.setItem('completedLists', JSON.stringify(completedLists));
+    loadCompletedLists();
+}
+
     const shoppingListContainer = document.getElementById('shopping-list');
     shoppingListContainer.innerHTML = '';
     list.forEach(item => {
