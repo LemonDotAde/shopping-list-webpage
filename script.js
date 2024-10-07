@@ -60,7 +60,8 @@ function saveCompletedList() {
         color: item.querySelector('input[type="color"]').value
     }));
     const completedLists = JSON.parse(localStorage.getItem('completedLists')) || [];
-    completedLists.push(completedList);
+    const totalCost = prompt('Enter total cost for the list (optional):', '');
+    completedLists.push({ list: completedList, totalCost: totalCost });
     localStorage.setItem('completedLists', JSON.stringify(completedLists));
     loadCompletedLists();
     document.getElementById('shopping-list').innerHTML = '';
