@@ -3,9 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCompletedLists();
 });
 
-window.addItem = addItem;
 
-window.addItem = addItem;
 
 function addItem() {
     const newItemInput = document.getElementById('new-item');
