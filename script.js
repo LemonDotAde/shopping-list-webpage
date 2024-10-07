@@ -6,7 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
 function addItem() {
     const newItemInput = document.getElementById('new-item');
     const newItemText = newItemInput.value.trim();
-    if (newItemText === '') return;
+    console.log('Add Item button clicked');
+    if (newItemText === '') {
+        console.log('No item text provided');
+        return;
+    }
 
     const listItem = createListItem(newItemText);
     document.getElementById('shopping-list').appendChild(listItem);
