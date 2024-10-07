@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCompletedLists();
 });
 
+window.addItem = addItem;
+
 function addItem() {
     const newItemInput = document.getElementById('new-item');
     const newItemText = newItemInput.value.trim();
