@@ -26,7 +26,9 @@ window.addItem = addItem;
 window.addItem = addItem;
 
 async function addItem() {
+    console.log('Add Item button clicked');
     const newItemInput = document.getElementById('new-item');
+    console.log('New item input:', newItemInput);
     const newItemText = newItemInput.value.trim();
     if (newItemText === '') return;
 
