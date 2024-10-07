@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCompletedLists();
 });
 
+window.addItem = addItem;
+
 
 
 function addItem() {
