@@ -88,6 +88,7 @@ function displayCompletedList(list) {
         listItem.style.backgroundColor = item.color;
         listItem.querySelector('input[type="checkbox"]').checked = true;
         listItem.style.textDecoration = 'line-through';
+        listItem.querySelector('span').style.color = '#000'; // Ensure text color is readable
         shoppingListContainer.appendChild(listItem);
     });
 }
