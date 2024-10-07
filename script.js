@@ -1,20 +1,31 @@
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCnqVp-tdMmviYRK61MgOVTgh5KPv3YrE8",
+  authDomain: "lemondotade.firebaseapp.com",
+  projectId: "lemondotade",
+  storageBucket: "lemondotade.appspot.com",
+  messagingSenderId: "831552704186",
+  appId: "1:831552704186:web:a0bbb1a77445bf53bbfc83"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 document.addEventListener('DOMContentLoaded', () => {
     loadCompletedLists();
 });
 
 window.addItem = addItem;
 
-
-
-function addItem() {
+async function addItem() {
     const newItemInput = document.getElementById('new-item');
     const newItemText = newItemInput.value.trim();
-    console.log('Add Item button clicked');
-    if (newItemText === '') {
-        console.log('No item text provided');
-        return;
-    }
+    if (newItemText === '') return;
 
     const listItem = createListItem(newItemText);
     document.getElementById('shopping-list').appendChild(listItem);
@@ -61,56 +72,50 @@ function checkIfListCompleted() {
     }
 }
 
-function saveCompletedList() {
+async function saveCompletedList() {
     const listItems = document.querySelectorAll('#shopping-list li');
     const completedList = Array.from(listItems).map(item => ({
         text: item.querySelector('span').textContent,
         color: item.querySelector('input[type="color"]').value
     }));
-    const completedLists = JSON.parse(localStorage.getItem('completedLists')) || [];
     const totalCost = prompt('Enter total cost for the list (optional):', '');
-    completedLists.push({ list: completedList, totalCost: totalCost });
-    localStorage.setItem('completedLists', JSON.stringify(completedLists));
+    await addDoc(collection(db, "completedLists"), { list: completedList, totalCost: totalCost });
     loadCompletedLists();
     document.getElementById('shopping-list').innerHTML = '';
 }
 
-function loadCompletedLists() {
-    const completedLists = JSON.parse(localStorage.getItem('completedLists')) || [];
+async function loadCompletedLists() {
+    const querySnapshot = await getDocs(collection(db, "completedLists"));
     const completedListsContainer = document.getElementById('completed-lists');
     completedListsContainer.innerHTML = '';
-    completedLists.forEach((list, index) => {
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
         const listElement = document.createElement('li');
-        listElement.textContent = `List ${index + 1}`;
+        listElement.textContent = `List ${doc.id}`;
 
         const totalCostElement = document.createElement('span');
-        totalCostElement.textContent = list.totalCost ? `Total Cost: €${list.totalCost}` : 'Total Cost: N/A';
+        totalCostElement.textContent = data.totalCost ? `Total Cost: €${data.totalCost}` : 'Total Cost: N/A';
         totalCostElement.style.marginLeft = '20px';
         listElement.appendChild(totalCostElement);
 
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.style.marginLeft = '20px';
-        deleteButton.addEventListener('click', (e) => {
+        deleteButton.addEventListener('click', async (e) => {
             e.stopPropagation();
-            deleteCompletedList(index);
+            await deleteDoc(doc(db, "completedLists", doc.id));
+            loadCompletedLists();
         });
         listElement.appendChild(deleteButton);
 
         listElement.addEventListener('click', () => {
-            displayCompletedList(list.list);
+            displayCompletedList(data.list);
         });
         completedListsContainer.appendChild(listElement);
     });
 }
 
-function deleteCompletedList(index) {
-    const completedLists = JSON.parse(localStorage.getItem('completedLists')) || [];
-    completedLists.splice(index, 1);
-    localStorage.setItem('completedLists', JSON.stringify(completedLists));
-    loadCompletedLists();
-}
-
+function displayCompletedList(list) {
     const shoppingListContainer = document.getElementById('shopping-list');
     shoppingListContainer.innerHTML = '';
     list.forEach(item => {
@@ -121,3 +126,4 @@ function deleteCompletedList(index) {
         listItem.querySelector('span').style.color = '#000'; // Ensure text color is readable
         shoppingListContainer.appendChild(listItem);
     });
+}
