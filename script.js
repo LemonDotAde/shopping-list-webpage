@@ -78,6 +78,20 @@ function loadCompletedLists() {
         totalCostElement.textContent = list.totalCost ? `Total Cost: ${list.totalCost}` : 'Total Cost: N/A';
         totalCostElement.style.marginLeft = '20px';
         listElement.appendChild(totalCostElement);
+        const totalCostElement = document.createElement('span');
+        totalCostElement.textContent = list.totalCost ? `Total Cost: €${list.totalCost}` : 'Total Cost: N/A';
+        totalCostElement.style.marginLeft = '20px';
+        listElement.appendChild(totalCostElement);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.style.marginLeft = '20px';
+        deleteButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteCompletedList(index);
+        });
+        listElement.appendChild(deleteButton);
+
         listElement.addEventListener('click', () => {
             displayCompletedList(list.list);
         });
