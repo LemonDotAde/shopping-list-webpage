@@ -121,4 +121,3 @@ function deleteCompletedList(index) {
         listItem.querySelector('span').style.color = '#000'; // Ensure text color is readable
         shoppingListContainer.appendChild(listItem);
     });
-}
