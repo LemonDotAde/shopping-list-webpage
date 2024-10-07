@@ -78,10 +78,7 @@ function loadCompletedLists() {
     completedLists.forEach((list, index) => {
         const listElement = document.createElement('li');
         listElement.textContent = `List ${index + 1}`;
-        const totalCostElement = document.createElement('span');
-        totalCostElement.textContent = list.totalCost ? `Total Cost: ${list.totalCost}` : 'Total Cost: N/A';
-        totalCostElement.style.marginLeft = '20px';
-        listElement.appendChild(totalCostElement);
+
         const totalCostElement = document.createElement('span');
         totalCostElement.textContent = list.totalCost ? `Total Cost: €${list.totalCost}` : 'Total Cost: N/A';
         totalCostElement.style.marginLeft = '20px';
